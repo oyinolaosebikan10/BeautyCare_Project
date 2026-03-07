@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OYINX Cosmetics</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Great+Vibes&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<header>
+  <div class="logo">
+    <h1>OYINX</h1>
+    <span class="cursive-logo">Cosmetics / BeautyCare</span>
+  </div>
+
+  <nav id="nav-links">
+    <a href="#">Home</a>
+    <a href="#about">About</a>
+    <a href="#finder">Beauty Finder</a>
+    <a href="#products">Products</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <div class="hamburger" id="hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</header>
+
+<section class="hero fade-in">
+  <div class="hero-content">
+    <h2>Discover The Beauty That Fits You</h2>
+    <p>
+      OYINX Cosmetics helps you identify makeup products and beauty routines that complement your natural features. Upload your photo and explore tailored suggestions.
+    </p>
+    <button onclick="scrollToFinder()" class="analyze-btn">Try Beauty Finder</button>
+  </div>
+</section>
+
+<section id="about" class="about fade-in">
+  <div class="about-box">
+    <h2>About OYINX</h2>
+    <p>
+      Beauty is personal. OYINX helps individuals discover cosmetic styles that enhance natural elegance. Through the Beauty Finder, users can upload a photo and receive curated recommendations based on skin tone and facial features. Our goal is to help you discover the beauty that suits you best.
+    </p>
+  </div>
+</section>
+
+<section id="finder" class="finder fade-in">
+  <h2>Beauty Finder</h2>
+  <div class="finder-controls">
+    <input type="file" id="photoUpload">
+    <select id="skinTone">
+      <option value="">Skin Tone</option>
+      <option value="light">Light</option>
+      <option value="medium">Medium</option>
+      <option value="dark">Dark</option>
+    </select>
+    <select id="faceShape">
+      <option value="">Face Shape</option>
+      <option value="oval">Oval</option>
+      <option value="round">Round</option>
+      <option value="square">Square</option>
+    </select>
+    <select id="undertone">
+      <option value="">Undertone</option>
+      <option value="warm">Warm</option>
+      <option value="cool">Cool</option>
+      <option value="neutral">Neutral</option>
+    </select>
+    <button onclick="analyzeBeauty()" class="analyze-btn">Analyze</button>
+  </div>
+
+  <div class="results">
+    <div class="before">
+      <h3>Your Photo</h3>
+      <img id="preview">
+    </div>
+    <div class="after">
+      <h3>Suggested Look</h3>
+      <div class="after-container">
+        <img id="afterImage" class="after-img">
+        <div class="makeup-overlay" id="makeupOverlay"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="beauty-profile">
+    <h3>Your Beauty Profile</h3>
+    <p id="analysis"></p>
+  </div>
+
+  <div class="product-suggestions">
+    <h3>Recommended Products</h3>
+    <div id="productResults"></div>
+  </div>
+</section>
+
+<section id="products" class="products fade-in">
+  <h2>Beauty Kits</h2>
+  <div class="cards">
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796">
+      <h3>Natural Glow Kit</h3>
+      <p>Subtle tones designed for everyday beauty, perfect for light skin tones and delicate looks.</p>
+    </div>
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348">
+      <h3>Evening Glam Kit</h3>
+      <p>Radiant cosmetics for special occasions, tailored for medium skin tones and elegant glamour.</p>
+    </div>
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad">
+      <h3>Minimal Beauty Kit</h3>
+      <p>Light essentials for enhancing natural features, perfect for a professional and refined appearance.</p>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="footer-grid">
+    <div>
+      <h4>OYINX</h4>
+      <p>Helping you discover the beauty that suits you best.</p>
+    </div>
+    <div>
+      <h4>Explore</h4>
+      <p>Home</p>
+      <p>Beauty Finder</p>
+      <p>Products</p>
+    </div>
+    <div>
+      <h4>Support</h4>
+      <p>Contact</p>
+      <p>Beauty Tips</p>
+      <p>FAQ</p>
+    </div>
+    <div>
+      <h4>Social</h4>
+      <p>Instagram</p>
+      <p>TikTok</p>
+      <p>Pinterest</p>
+    </div>
+  </div>
+  <p class="copyright">© 2026 OYINX Cosmetics</p>
+</footer>
+
+<div class="floating-btn analyze-btn" onclick="scrollToFinder()">Analyze Beauty</div>
+
+<script src="script.js"></script>
+</body>
+</html>
