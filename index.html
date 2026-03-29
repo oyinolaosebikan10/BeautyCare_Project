@@ -4,154 +4,769 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OYINX Cosmetics</title>
+<title>OYINX | AI Beauty Intelligence Platform</title>
 <link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Great+Vibes&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Great+Vibes&family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
 
-<header>
+<!-- Loading Screen -->
+<div class="loading-screen" id="loadingScreen">
+  <div class="loader-container">
+    <div class="loader-ring"></div>
+    <div class="loader-ring"></div>
+    <div class="loader-ring"></div>
+    <div class="loader-text">OYINX</div>
+  </div>
+  <div class="loader-tagline">Intelligent Beauty Analysis</div>
+</div>
+
+<!-- Authentication Modal -->
+<div class="auth-modal" id="authModal">
+  <div class="auth-container">
+    <button class="close-auth" onclick="closeAuth()"><i class="fas fa-times"></i></button>
+    
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="switchAuthTab('login')">Sign In</button>
+      <button class="auth-tab" onclick="switchAuthTab('register')">Create Account</button>
+    </div>
+
+    <!-- Login Form -->
+    <div class="auth-form active" id="loginForm">
+      <h2>Welcome Back</h2>
+      <p class="auth-subtitle">Access your personalized beauty profile</p>
+      
+      <form onsubmit="handleLogin(event)">
+        <div class="input-group">
+          <i class="fas fa-envelope"></i>
+          <input type="email" placeholder="Email address" required id="loginEmail">
+        </div>
+        <div class="input-group">
+          <i class="fas fa-lock"></i>
+          <input type="password" placeholder="Password" required id="loginPassword">
+          <button type="button" class="toggle-password" onclick="togglePassword('loginPassword')">
+            <i class="fas fa-eye"></i>
+          </button>
+        </div>
+        <div class="form-options">
+          <label class="remember-me">
+            <input type="checkbox">
+            <span>Remember me</span>
+          </label>
+          <a href="#" class="forgot-password">Forgot password?</a>
+        </div>
+        <button type="submit" class="auth-btn">
+          <span>Sign In</span>
+          <i class="fas fa-arrow-right"></i>
+        </button>
+      </form>
+
+      <div class="social-auth">
+        <p>Or continue with</p>
+        <div class="social-buttons">
+          <button class="social-btn google" onclick="socialLogin('google')">
+            <i class="fab fa-google"></i>
+          </button>
+          <button class="social-btn apple" onclick="socialLogin('apple')">
+            <i class="fab fa-apple"></i>
+          </button>
+          <button class="social-btn facebook" onclick="socialLogin('facebook')">
+            <i class="fab fa-facebook-f"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Register Form -->
+    <div class="auth-form" id="registerForm">
+      <h2>Create Your Profile</h2>
+      <p class="auth-subtitle">Join thousands discovering their perfect beauty match</p>
+      
+      <form onsubmit="handleRegister(event)">
+        <div class="input-row">
+          <div class="input-group">
+            <i class="fas fa-user"></i>
+            <input type="text" placeholder="First name" required id="regFirstName">
+          </div>
+          <div class="input-group">
+            <i class="fas fa-user"></i>
+            <input type="text" placeholder="Last name" required id="regLastName">
+          </div>
+        </div>
+        <div class="input-group">
+          <i class="fas fa-envelope"></i>
+          <input type="email" placeholder="Email address" required id="regEmail">
+        </div>
+        <div class="input-group">
+          <i class="fas fa-lock"></i>
+          <input type="password" placeholder="Create password" required id="regPassword" oninput="checkPasswordStrength(this.value)">
+          <div class="password-strength" id="passwordStrength"></div>
+        </div>
+        <div class="input-group">
+          <i class="fas fa-venus-mars"></i>
+          <select id="regGender">
+            <option value="">Select gender (optional)</option>
+            <option value="female">Female</option>
+            <option value="male">Male</option>
+            <option value="non-binary">Non-binary</option>
+            <option value="prefer-not">Prefer not to say</option>
+          </select>
+        </div>
+        <div class="terms-check">
+          <label>
+            <input type="checkbox" required>
+            <span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></span>
+          </label>
+        </div>
+        <button type="submit" class="auth-btn">
+          <span>Create Account</span>
+          <i class="fas fa-arrow-right"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- User Account Dropdown -->
+<div class="user-menu" id="userMenu">
+  <div class="user-header">
+    <div class="user-avatar" id="userAvatar">
+      <span id="userInitials">JD</span>
+      <img src="" alt="" id="userAvatarImg" hidden>
+    </div>
+    <div class="user-info">
+      <h4 id="userName">Jane Doe</h4>
+      <span id="userEmail">jane@example.com</span>
+    </div>
+  </div>
+  <div class="user-links">
+    <a href="#profile" onclick="showProfile()"><i class="fas fa-user-circle"></i> My Beauty Profile</a>
+    <a href="#history" onclick="showHistory()"><i class="fas fa-history"></i> Analysis History</a>
+    <a href="#saved" onclick="showSaved()"><i class="fas fa-heart"></i> Saved Products</a>
+    <a href="#settings" onclick="showSettings()"><i class="fas fa-cog"></i> Settings</a>
+    <div class="divider"></div>
+    <a href="#" onclick="logout()" class="logout-link"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+  </div>
+</div>
+
+<!-- Header -->
+<header class="header-scrolled" id="header">
   <div class="logo">
     <h1>OYINX</h1>
-    <span class="cursive-logo">Cosmetics / BeautyCare</span>
+    <span class="cursive-logo">Beauty Intelligence</span>
   </div>
 
   <nav id="nav-links">
-    <a href="#">Home</a>
-    <a href="#about">About</a>
-    <a href="#finder">Beauty Finder</a>
-    <a href="#products">Products</a>
-    <a href="#contact">Contact</a>
+    <a href="#home" class="nav-link active">Home</a>
+    <a href="#about" class="nav-link">About</a>
+    <a href="#finder" class="nav-link">AI Analysis</a>
+    <a href="#products" class="nav-link">Curated Products</a>
+    <a href="#ingredients" class="nav-link">Ingredients</a>
+    <a href="#community" class="nav-link">Community</a>
   </nav>
 
-  <div class="hamburger" id="hamburger">
-    <span></span>
-    <span></span>
-    <span></span>
+  <div class="header-actions">
+    <button class="user-btn" id="userBtn" onclick="toggleUserMenu()">
+      <i class="fas fa-user"></i>
+      <span>Sign In</span>
+    </button>
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
   </div>
 </header>
 
-<section class="hero fade-in">
+<!-- Hero Section -->
+<section class="hero" id="home">
+  <div class="hero-particles" id="particles"></div>
+  <div class="hero-bg-slider">
+    <div class="hero-slide active" style="background-image: url('https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9')"></div>
+    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1512496015851-a90fb38ba796')"></div>
+    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1596462502278-27bfdc403348')"></div>
+  </div>
+  <div class="hero-overlay"></div>
+  
   <div class="hero-content">
-    <h2>Discover The Beauty That Fits You</h2>
-    <p>
-      OYINX Cosmetics helps you identify makeup products and beauty routines that complement your natural features. Upload your photo and explore tailored suggestions.
-    </p>
-    <button onclick="scrollToFinder()" class="analyze-btn">Try Beauty Finder</button>
-  </div>
-</section>
-
-<section id="about" class="about fade-in">
-  <div class="about-box">
-    <h2>About OYINX</h2>
-    <p>
-      Beauty is personal. OYINX helps individuals discover cosmetic styles that enhance natural elegance. Through the Beauty Finder, users can upload a photo and receive curated recommendations based on skin tone and facial features. Our goal is to help you discover the beauty that suits you best.
-    </p>
-  </div>
-</section>
-
-<section id="finder" class="finder fade-in">
-  <h2>Beauty Finder</h2>
-  <div class="finder-controls">
-    <input type="file" id="photoUpload">
-    <select id="skinTone">
-      <option value="">Skin Tone</option>
-      <option value="light">Light</option>
-      <option value="medium">Medium</option>
-      <option value="dark">Dark</option>
-    </select>
-    <select id="faceShape">
-      <option value="">Face Shape</option>
-      <option value="oval">Oval</option>
-      <option value="round">Round</option>
-      <option value="square">Square</option>
-    </select>
-    <select id="undertone">
-      <option value="">Undertone</option>
-      <option value="warm">Warm</option>
-      <option value="cool">Cool</option>
-      <option value="neutral">Neutral</option>
-    </select>
-    <button onclick="analyzeBeauty()" class="analyze-btn">Analyze</button>
-  </div>
-
-  <div class="results">
-    <div class="before">
-      <h3>Your Photo</h3>
-      <img id="preview">
+    <div class="hero-badge" data-aos="fade-down">
+      <i class="fas fa-sparkles"></i> AI-Powered Beauty Intelligence
     </div>
-    <div class="after">
-      <h3>Suggested Look</h3>
-      <div class="after-container">
-        <img id="afterImage" class="after-img">
-        <div class="makeup-overlay" id="makeupOverlay"></div>
+    <h2 class="hero-title">Discover Your <br><span class="highlight-text">Perfect Beauty</span> Match</h2>
+    <p class="hero-subtitle">
+      Upload your photo and let our advanced AI analyze your unique features. Receive personalized makeup and skincare recommendations with direct links to trusted retailers.
+    </p>
+    <div class="hero-buttons">
+      <button onclick="scrollToFinder()" class="btn-primary">
+        <span>Start AI Analysis</span>
+        <i class="fas fa-wand-magic-sparkles"></i>
+      </button>
+      <button onclick="openAuth('register')" class="btn-secondary" id="heroCtaBtn">
+        <span>Create Free Account</span>
+        <i class="fas fa-user-plus"></i>
+      </button>
+    </div>
+    
+    <div class="hero-stats">
+      <div class="stat-item">
+        <span class="stat-number" data-count="50000">0</span>
+        <span class="stat-label">Beauty Profiles</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number" data-count="98">0</span>
+        <span class="stat-label">% Match Accuracy</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number" data-count="150">0</span>
+        <span class="stat-label">Curated Products</span>
       </div>
     </div>
   </div>
+</section>
 
-  <div class="beauty-profile">
-    <h3>Your Beauty Profile</h3>
-    <p id="analysis"></p>
-  </div>
-
-  <div class="product-suggestions">
-    <h3>Recommended Products</h3>
-    <div id="productResults"></div>
+<!-- About Section -->
+<section id="about" class="about">
+  <div class="about-container">
+    <div class="about-image" data-aos="fade-right">
+      <div class="about-img-wrapper">
+        <img src="https://images.unsplash.com/photo-1526045478516-99145907023c" alt="OYINX Technology">
+        <div class="floating-card card-1">
+          <i class="fas fa-robot"></i>
+          <span>AI-Powered Analysis</span>
+        </div>
+        <div class="floating-card card-2">
+          <i class="fas fa-shield-check"></i>
+          <span>100% Unbiased</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="about-content" data-aos="fade-left">
+      <span class="section-subtitle">The Future of Beauty</span>
+      <h2 class="section-title">Science Meets <span class="gradient-text">Beauty</span></h2>
+      <p class="about-text">
+        OYINX uses advanced computer vision and dermatological algorithms to analyze your skin tone, undertone, face shape, and texture. We don't sell products—we provide intelligent recommendations linking you to the best options from trusted retailers worldwide.
+      </p>
+      
+      <div class="about-features">
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-camera-retro"></i>
+          </div>
+          <div class="feature-text">
+            <h4>Visual Analysis</h4>
+            <p>Upload photos for instant skin tone and feature detection</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-link"></i>
+          </div>
+          <div class="feature-text">
+            <h4>Direct Links</h4>
+            <p>We connect you to Amazon, Sephora, Ulta, and authorized retailers</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-user-shield"></i>
+          </div>
+          <div class="feature-text">
+            <h4>Personalized Profiles</h4>
+            <p>Save your analysis and get updated recommendations over time</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
-<section id="products" class="products fade-in">
-  <h2>Beauty Kits</h2>
-  <div class="cards">
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796">
-      <h3>Natural Glow Kit</h3>
-      <p>Subtle tones designed for everyday beauty, perfect for light skin tones and delicate looks.</p>
+<!-- AI Beauty Finder Section -->
+<section id="finder" class="finder">
+  <div class="finder-header" data-aos="fade-up">
+    <span class="section-subtitle">Intelligent Analysis</span>
+    <h2 class="section-title">AI Beauty <span class="gradient-text">Analyzer</span></h2>
+    <p class="finder-description">
+      Our neural network analyzes facial features, skin conditions, and color theory to generate your personalized beauty profile. No selling—just pure intelligence.
+    </p>
+  </div>
+
+  <div class="finder-container">
+    <!-- Progress Steps -->
+    <div class="finder-steps">
+      <div class="step active" data-step="1">
+        <div class="step-icon"><i class="fas fa-camera"></i></div>
+        <span>Upload</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step" data-step="2">
+        <div class="step-icon"><i class="fas fa-sliders-h"></i></div>
+        <span>Profile</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step" data-step="3">
+        <div class="step-icon"><i class="fas fa-brain"></i></div>
+        <span>Analysis</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step" data-step="4">
+        <div class="step-icon"><i class="fas fa-magic"></i></div>
+        <span>Results</span>
+      </div>
     </div>
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348">
-      <h3>Evening Glam Kit</h3>
-      <p>Radiant cosmetics for special occasions, tailored for medium skin tones and elegant glamour.</p>
+
+    <div class="finder-workspace">
+      <!-- Input Panel -->
+      <div class="finder-panel input-panel" data-aos="fade-right">
+        <div class="panel-header">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <h3>Upload Your Photo</h3>
+        </div>
+        
+        <div class="upload-zone" id="uploadZone">
+          <input type="file" id="photoUpload" accept="image/*" hidden>
+          <div class="upload-placeholder" id="uploadPlaceholder">
+            <div class="upload-illustration">
+              <div class="face-outline">
+                <i class="fas fa-face-smile"></i>
+              </div>
+              <div class="scan-line"></div>
+            </div>
+            <h4>Drop your photo here</h4>
+            <p>or click to browse files</p>
+            <span class="upload-hint">JPG, PNG up to 10MB • Secure & private</span>
+          </div>
+          <div class="upload-preview" id="uploadPreview" hidden>
+            <img id="preview" alt="Your photo">
+            <div class="photo-actions">
+              <button class="change-photo" onclick="resetUpload()">
+                <i class="fas fa-redo"></i> Change
+              </button>
+              <button class="enhance-photo" onclick="enhancePhoto()">
+                <i class="fas fa-wand-magic"></i> Enhance
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-form">
+          <h4><i class="fas fa-user-cog"></i> Your Characteristics</h4>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Skin Tone</label>
+              <div class="tone-selector" id="skinToneSelector">
+                <div class="tone-option" data-value="fair" style="background: #FFDFC4" title="Fair"></div>
+                <div class="tone-option" data-value="light" style="background: #F0C8A0" title="Light"></div>
+                <div class="tone-option" data-value="medium" style="background: #D4A373" title="Medium"></div>
+                <div class="tone-option" data-value="tan" style="background: #B8956A" title="Tan"></div>
+                <div class="tone-option" data-value="dark" style="background: #8B5A3C" title="Dark"></div>
+                <div class="tone-option" data-value="deep" style="background: #5C3A21" title="Deep"></div>
+              </div>
+              <input type="hidden" id="skinTone">
+            </div>
+            
+            <div class="form-group">
+              <label>Undertone</label>
+              <div class="undertone-cards">
+                <div class="undertone-card" data-value="cool">
+                  <div class="undertone-visual cool"></div>
+                  <span>Cool</span>
+                  <small>Pink/Blue</small>
+                </div>
+                <div class="undertone-card" data-value="warm">
+                  <div class="undertone-visual warm"></div>
+                  <span>Warm</span>
+                  <small>Yellow/Golden</small>
+                </div>
+                <div class="undertone-card" data-value="neutral">
+                  <div class="undertone-visual neutral"></div>
+                  <span>Neutral</span>
+                  <small>Balanced</small>
+                </div>
+              </div>
+              <input type="hidden" id="undertone">
+            </div>
+            
+            <div class="form-group">
+              <label>Face Shape</label>
+              <select id="faceShape">
+                <option value="">Detect automatically</option>
+                <option value="oval">Oval</option>
+                <option value="round">Round</option>
+                <option value="square">Square</option>
+                <option value="heart">Heart</option>
+                <option value="diamond">Diamond</option>
+                <option value="long">Long</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label>Primary Concern</label>
+              <select id="skinConcern">
+                <option value="">General enhancement</option>
+                <option value="acne">Acne/blemishes</option>
+                <option value="aging">Anti-aging</option>
+                <option value="dryness">Dryness</option>
+                <option value="oiliness">Oiliness</option>
+                <option value="sensitivity">Sensitivity</option>
+                <option value="darkspots">Dark spots</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-group checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="hasAllergies">
+              <span class="checkmark"></span>
+              <div class="checkbox-content">
+                <strong>I have allergies</strong>
+                <small>We'll screen all recommendations</small>
+              </div>
+            </label>
+          </div>
+          
+          <div class="allergy-input" id="allergyInput" style="display: none;">
+            <label>Allergies to avoid (comma separated)</label>
+            <input type="text" id="allergyList" placeholder="e.g., fragrance, nuts, gluten, parabens">
+          </div>
+        </div>
+
+        <button onclick="analyzeBeauty()" class="analyze-btn" id="analyzeBtn">
+          <span class="btn-text">Generate My Analysis</span>
+          <span class="btn-loader" hidden>
+            <div class="spinner"></div>
+            <span>AI Processing...</span>
+          </span>
+        </button>
+      </div>
+
+      <!-- Results Panel -->
+      <div class="finder-panel results-panel" id="resultsPanel" data-aos="fade-left">
+        <div class="panel-header">
+          <i class="fas fa-chart-pie"></i>
+          <h3>Your Analysis Results</h3>
+        </div>
+        
+        <div class="results-comparison">
+          <div class="comparison-item before">
+            <div class="comparison-label">Original</div>
+            <div class="image-container" id="beforeContainer">
+              <img id="beforeImage" src="" alt="Before">
+              <div class="face-mesh" id="faceMesh"></div>
+            </div>
+          </div>
+          
+          <div class="comparison-divider">
+            <div class="vs-badge">AI</div>
+          </div>
+          
+          <div class="comparison-item after">
+            <div class="comparison-label">Enhanced Guide</div>
+            <div class="image-container after-container" id="afterContainer">
+              <img id="afterImage" alt="After">
+              <div class="makeup-overlay" id="makeupOverlay"></div>
+              <div class="feature-markers" id="featureMarkers"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="analysis-dashboard">
+          <div class="dashboard-card skin-profile">
+            <div class="card-icon"><i class="fas fa-fingerprint"></i></div>
+            <div class="card-content">
+              <h4>Skin Profile</h4>
+              <p id="skinProfileText">Complete the analysis to see your detailed skin profile</p>
+              <div class="profile-badges" id="profileBadges"></div>
+            </div>
+          </div>
+          
+          <div class="dashboard-card color-science">
+            <div class="card-icon"><i class="fas fa-palette"></i></div>
+            <div class="card-content">
+              <h4>Color Science</h4>
+              <div class="color-analysis" id="colorAnalysis">
+                <div class="season-palette" id="seasonPalette">
+                  <!-- Dynamic seasonal color analysis -->
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="dashboard-card face-geometry">
+            <div class="card-icon"><i class="fas fa-draw-polygon"></i></div>
+            <div class="card-content">
+              <h4>Face Geometry</h4>
+              <p id="faceGeometryText">Upload photo for facial structure analysis</p>
+              <div class="contour-guide" id="contourGuide"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="save-analysis">
+          <button class="btn-outline" onclick="saveAnalysis()">
+            <i class="fas fa-save"></i> Save to My Profile
+          </button>
+          <button class="btn-secondary" onclick="shareAnalysis()">
+            <i class="fas fa-share-alt"></i> Share Results
+          </button>
+        </div>
+      </div>
     </div>
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad">
-      <h3>Minimal Beauty Kit</h3>
-      <p>Light essentials for enhancing natural features, perfect for a professional and refined appearance.</p>
+
+    <!-- Product Recommendations -->
+    <div class="recommendations-section" id="recommendationsSection">
+      <div class="recommendations-header">
+        <h3><i class="fas fa-sparkles"></i> Your Personalized Recommendations</h3>
+        <p class="affiliate-disclosure">
+          <i class="fas fa-info-circle"></i> We don't sell these products. Clicking links takes you to authorized retailers like Amazon, Sephora, and Ulta.
+        </p>
+      </div>
+      
+      <div class="category-tabs" id="categoryTabs">
+        <button class="cat-tab active" data-category="all">All</button>
+        <button class="cat-tab" data-category="foundation">Foundation</button>
+        <button class="cat-tab" data-category="concealer">Concealer</button>
+        <button class="cat-tab" data-category="blush">Blush</button>
+        <button class="cat-tab" data-category="eyeshadow">Eyes</button>
+        <button class="cat-tab" data-category="lipstick">Lips</button>
+        <button class="cat-tab" data-category="skincare">Skincare</button>
+      </div>
+      
+      <div class="recommendations-grid" id="productResults">
+        <!-- Dynamic product recommendations -->
+      </div>
+
+      <div class="application-masterclass" id="applicationMasterclass">
+        <h4><i class="fas fa-graduation-cap"></i> Personalized Application Masterclass</h4>
+        <div class="masterclass-timeline" id="masterclassTimeline">
+          <!-- Step-by-step video guides -->
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<footer id="contact">
-  <div class="footer-grid">
-    <div>
-      <h4>OYINX</h4>
-      <p>Helping you discover the beauty that suits you best.</p>
-    </div>
-    <div>
-      <h4>Explore</h4>
-      <p>Home</p>
-      <p>Beauty Finder</p>
-      <p>Products</p>
-    </div>
-    <div>
-      <h4>Support</h4>
-      <p>Contact</p>
-      <p>Beauty Tips</p>
-      <p>FAQ</p>
-    </div>
-    <div>
-      <h4>Social</h4>
-      <p>Instagram</p>
-      <p>TikTok</p>
-      <p>Pinterest</p>
+<!-- Curated Products Section -->
+<section id="products" class="products">
+  <div class="section-header" data-aos="fade-up">
+    <span class="section-subtitle">Expert Curation</span>
+    <h2 class="section-title">Premium Product <span class="gradient-text">Directory</span></h2>
+    <p class="section-description">
+      Hand-selected products from trusted brands. Click any item to view on authorized retailer sites.
+    </p>
+    
+    <div class="product-filters">
+      <button class="filter-btn active" data-filter="all">All Categories</button>
+      <button class="filter-btn" data-filter="makeup">Makeup</button>
+      <button class="filter-btn" data-filter="skincare">Skincare</button>
+      <button class="filter-btn" data-filter="tools">Tools</button>
+      <button class="filter-btn" data-filter="clean">Clean Beauty</button>
     </div>
   </div>
-  <p class="copyright">© 2026 OYINX Cosmetics</p>
+
+  <div class="products-showcase" id="productsShowcase">
+    <!-- Featured products with retailer links -->
+  </div>
+
+  <div class="retailer-trust" data-aos="fade-up">
+    <p>Trusted Retailer Partners</p>
+    <div class="retailer-logos">
+      <div class="retailer-logo"><i class="fab fa-amazon"></i> Amazon</div>
+      <div class="retailer-logo"><i class="fas fa-shopping-bag"></i> Sephora</div>
+      <div class="retailer-logo"><i class="fas fa-store"></i> Ulta</div>
+      <div class="retailer-logo"><i class="fas fa-sparkles"></i> Dermstore</div>
+      <div class="retailer-logo"><i class="fas fa-leaf"></i> Beautylish</div>
+    </div>
+  </div>
+</section>
+
+<!-- Ingredients Intelligence Section -->
+<section id="ingredients" class="ingredients-section">
+  <div class="section-header" data-aos="fade-up">
+    <span class="section-subtitle">Knowledge Base</span>
+    <h2 class="section-title">Ingredients <span class="gradient-text">Intelligence</span></h2>
+  </div>
+
+  <div class="ingredients-search-container">
+    <div class="ingredient-smart-search">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="Search ingredients, concerns, or benefits..." id="ingredientSmartSearch">
+      <button class="search-action"><i class="fas fa-arrow-right"></i></button>
+    </div>
+    
+    <div class="smart-filters">
+      <button class="smart-filter active" data-filter="all">All</button>
+      <button class="smart-filter" data-filter="hydrating"><i class="fas fa-tint"></i> Hydrating</button>
+      <button class="smart-filter" data-filter="anti-aging"><i class="fas fa-clock"></i> Anti-Aging</button>
+      <button class="smart-filter" data-filter="brightening"><i class="fas fa-sun"></i> Brightening</button>
+      <button class="smart-filter" data-filter="acne"><i class="fas fa-shield-virus"></i> Acne-Fighting</button>
+      <button class="smart-filter" data-filter="soothing"><i class="fas fa-spa"></i> Soothing</button>
+    </div>
+  </div>
+
+  <div class="ingredients-knowledge-grid" id="ingredientsGrid">
+    <!-- Ingredient knowledge cards -->
+  </div>
+
+  <div class="safety-center" data-aos="fade-up">
+    <div class="safety-header">
+      <i class="fas fa-shield-alt"></i>
+      <h3>Safety & Allergy Center</h3>
+    </div>
+    <div class="safety-grid">
+      <div class="safety-card">
+        <div class="safety-icon warning">
+          <i class="fas fa-allergies"></i>
+        </div>
+        <h4>Allergy Database</h4>
+        <p>Cross-reference products against 500+ known allergens and irritants</p>
+      </div>
+      <div class="safety-card">
+        <div class="safety-icon success">
+          <i class="fas fa-check-double"></i>
+        </div>
+        <h4>Clean Standards</h4>
+        <p>Flag parabens, sulfates, phthalates, and artificial fragrances</p>
+      </div>
+      <div class="safety-card">
+        <div class="safety-icon info">
+          <i class="fas fa-flask"></i>
+        </div>
+        <h4>Clinical Data</h4>
+        <p>Evidence-based ingredient effectiveness ratings</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Community Section -->
+<section id="community" class="community-section">
+  <div class="section-header" data-aos="fade-up">
+    <span class="section-subtitle">Beauty Collective</span>
+    <h2 class="section-title">Join Our <span class="gradient-text">Community</span></h2>
+  </div>
+
+  <div class="community-grid">
+    <div class="community-card transformations" data-aos="fade-up">
+      <div class="community-visual">
+        <div class="before-after-mini">
+          <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9" alt="Before">
+          <img src="https://images.unsplash.com/photo-1487412912498-0447578fcca8" alt="After">
+        </div>
+      </div>
+      <h3>Transformation Gallery</h3>
+      <p>See real results from our AI recommendations</p>
+      <button class="btn-text-link">View Gallery <i class="fas fa-arrow-right"></i></button>
+    </div>
+    
+    <div class="community-card experts" data-aos="fade-up" data-aos-delay="100">
+      <div class="expert-avatars">
+        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330" alt="Expert">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d" alt="Expert">
+        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80" alt="Expert">
+        <span class="more-experts">+50</span>
+      </div>
+      <h3>Expert Panel</h3>
+      <p>Dermatologists and makeup artists review our AI</p>
+      <button class="btn-text-link">Meet Experts <i class="fas fa-arrow-right"></i></button>
+    </div>
+    
+    <div class="community-card discussions" data-aos="fade-up" data-aos-delay="200">
+      <div class="discussion-preview">
+        <div class="topic">"Best foundation for combination skin?"</div>
+        <div class="topic">"How to identify undertone"</div>
+        <div class="topic">"Clean beauty recommendations"</div>
+      </div>
+      <h3>Discussions</h3>
+      <p>Join 50,000+ members sharing beauty intelligence</p>
+      <button class="btn-text-link">Join Discussion <i class="fas fa-arrow-right"></i></button>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer id="contact" class="footer">
+  <div class="footer-main">
+    <div class="footer-brand-section">
+      <div class="logo">
+        <h1>OYINX</h1>
+        <span class="cursive-logo">Beauty Intelligence</span>
+      </div>
+      <p class="brand-mission">
+        Empowering beauty decisions through artificial intelligence and scientific analysis. We don't sell products—we perfect recommendations.
+      </p>
+    </div>
+
+    <div class="footer-links-grid">
+      <div class="footer-column">
+        <h4>Platform</h4>
+        <ul>
+          <li><a href="#finder">AI Analysis</a></li>
+          <li><a href="#products">Product Directory</a></li>
+          <li><a href="#ingredients">Ingredients</a></li>
+          <li><a href="#community">Community</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-column">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Our Technology</a></li>
+          <li><a href="#">Expert Panel</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-column">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-column">
+        <h4>Connect</h4>
+        <div class="social-grid">
+          <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-tiktok"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-pinterest"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+        </div>
+        <p class="newsletter-text">Get weekly beauty intelligence</p>
+        <div class="footer-newsletter">
+          <input type="email" placeholder="Your email">
+          <button><i class="fas fa-paper-plane"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="footer-bottom">
+    <p class="copyright">© 2026 OYINX Intelligence Inc. All rights reserved.</p>
+  </div>
 </footer>
 
-<div class="floating-btn analyze-btn" onclick="scrollToFinder()">Analyze Beauty</div>
+<!-- Floating Action Button -->
+<div class="floating-actions">
+  <button class="fab-secondary" onclick="scrollToTop()" title="Back to top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+  <button class="fab-primary" onclick="scrollToFinder()" title="New Analysis">
+    <i class="fas fa-wand-magic-sparkles"></i>
+  </button>
+</div>
 
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
