@@ -1,0 +1,362 @@
+<!-- admin.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Admin Dashboard | OYINX Intelligence</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Great+Vibes&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="admin-body">
+
+<!-- Admin Login Modal -->
+<div class="admin-login-modal" id="adminLoginModal">
+    <div class="admin-login-container">
+        <div class="admin-login-header">
+            <h1>OYINX</h1>
+            <span>Admin Portal</span>
+        </div>
+        <form onsubmit="handleAdminLogin(event)">
+            <div class="input-group">
+                <i class="fas fa-user-shield"></i>
+                <input type="text" placeholder="Admin ID" required id="adminId">
+            </div>
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" placeholder="Password" required id="adminPassword">
+            </div>
+            <button type="submit" class="admin-login-btn">
+                <span>Access Dashboard</span>
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Admin Dashboard -->
+<div class="admin-dashboard" id="adminDashboard" style="display: none;">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+        <div class="sidebar-header">
+            <h2>OYINX</h2>
+            <span>Admin</span>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="#" class="sidebar-link active" onclick="showSection('overview')">
+                <i class="fas fa-chart-line"></i>
+                <span>Overview</span>
+            </a>
+            <a href="#" class="sidebar-link" onclick="showSection('users')">
+                <i class="fas fa-users"></i>
+                <span>Users</span>
+                <span class="badge" id="userBadge">0</span>
+            </a>
+            <a href="#" class="sidebar-link" onclick="showSection('analytics')">
+                <i class="fas fa-analytics"></i>
+                <span>Analytics</span>
+            </a>
+            <a href="#" class="sidebar-link" onclick="showSection('analyses')">
+                <i class="fas fa-microscope"></i>
+                <span>AI Analyses</span>
+                <span class="badge" id="analysisBadge">0</span>
+            </a>
+            <a href="#" class="sidebar-link" onclick="showSection('products')">
+                <i class="fas fa-box-open"></i>
+                <span>Products</span>
+            </a>
+            <a href="#" class="sidebar-link" onclick="showSection('resources')">
+                <i class="fas fa-book"></i>
+                <span>Digital Resources</span>
+            </a>
+            <a href="#" class="sidebar-link" onclick="showSection('allergies')">
+                <i class="fas fa-allergies"></i>
+                <span>Allergy Reports</span>
+            </a>
+            <a href="#" class="sidebar-link" onclick="showSection('settings')">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <button onclick="adminLogout()" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <!-- Top Header -->
+        <header class="admin-header">
+            <h2 id="pageTitle">Dashboard Overview</h2>
+            <div class="admin-actions">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search...">
+                </div>
+                <button class="notification-btn">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" id="notificationCount">3</span>
+                </button>
+                <div class="admin-profile">
+                    <div class="admin-avatar">A</div>
+                    <span>Admin</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Overview Section -->
+        <section class="admin-section active" id="overviewSection">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon users">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalUsers">0</h3>
+                        <p>Total Users</p>
+                        <span class="stat-change positive" id="userGrowth">+0%</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon analyses">
+                        <i class="fas fa-microscope"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalAnalyses">0</h3>
+                        <p>AI Analyses</p>
+                        <span class="stat-change positive" id="analysisGrowth">+0%</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon products">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalProducts">0</h3>
+                        <p>Products Saved</p>
+                        <span class="stat-change positive" id="productGrowth">+0%</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon revenue">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalRevenue">$0</h3>
+                        <p>Est. Affiliate Revenue</p>
+                        <span class="stat-change positive" id="revenueGrowth">+0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h3>User Growth</h3>
+                    <canvas id="userGrowthChart"></canvas>
+                </div>
+                
+                <div class="chart-card">
+                    <h3>Analysis Distribution</h3>
+                    <canvas id="analysisPieChart"></canvas>
+                </div>
+            </div>
+
+            <div class="recent-activity">
+                <h3>Recent Activity</h3>
+                <div class="activity-list" id="activityList">
+                    <!-- Dynamic activity items -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Users Section -->
+        <section class="admin-section" id="usersSection">
+            <div class="section-header-actions">
+                <div class="filter-bar">
+                    <input type="text" placeholder="Search users..." id="userSearch">
+                    <select id="userFilter">
+                        <option value="all">All Users</option>
+                        <option value="today">Joined Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                    </select>
+                </div>
+                <button class="btn-primary" onclick="exportData('users')">
+                    <i class="fas fa-download"></i> Export
+                </button>
+            </div>
+            
+            <div class="data-table-container">
+                <table class="data-table" id="usersTable">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Email</th>
+                            <th>Joined</th>
+                            <th>Analyses</th>
+                            <th>Saved Products</th>
+                            <th>Last Active</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <!-- Dynamic rows -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Analytics Section -->
+        <section class="admin-section" id="analyticsSection">
+            <div class="analytics-grid">
+                <div class="analytics-card">
+                    <h3>Skin Tone Distribution</h3>
+                    <canvas id="skinToneChart"></canvas>
+                </div>
+                
+                <div class="analytics-card">
+                    <h3>Undertone Preferences</h3>
+                    <canvas id="undertoneChart"></canvas>
+                </div>
+                
+                <div class="analytics-card">
+                    <h3>Top Concerns</h3>
+                    <canvas id="concernsChart"></canvas>
+                </div>
+                
+                <div class="analytics-card">
+                    <h3>Popular Categories</h3>
+                    <canvas id="categoriesChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="detailed-stats">
+                <h3>Detailed Statistics</h3>
+                <div class="stats-table" id="detailedStatsTable">
+                    <!-- Dynamic stats -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Analyses Section -->
+        <section class="admin-section" id="analysesSection">
+            <div class="section-header-actions">
+                <div class="filter-bar">
+                    <input type="text" placeholder="Search analyses..." id="analysisSearch">
+                    <select id="analysisFilter">
+                        <option value="all">All Analyses</option>
+                        <option value="today">Today</option>
+                        <option value="week">This Week</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="analyses-grid" id="analysesGrid">
+                <!-- Dynamic analysis cards -->
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section class="admin-section" id="productsSection">
+            <div class="section-header-actions">
+                <button class="btn-primary" onclick="addNewProduct()">
+                    <i class="fas fa-plus"></i> Add Product
+                </button>
+            </div>
+            
+            <div class="products-management-grid" id="productsManagementGrid">
+                <!-- Dynamic product management cards -->
+            </div>
+        </section>
+
+        <!-- Resources Section -->
+        <section class="admin-section" id="resourcesSection">
+            <div class="section-header-actions">
+                <button class="btn-primary" onclick="addNewResource()">
+                    <i class="fas fa-plus"></i> Add E-book/Resource
+                </button>
+            </div>
+            
+            <div class="resources-management-grid" id="resourcesManagementGrid">
+                <!-- Dynamic resource cards -->
+            </div>
+        </section>
+
+        <!-- Allergy Reports Section -->
+        <section class="admin-section" id="allergiesSection">
+            <div class="allergy-summary">
+                <div class="allergy-stat">
+                    <h4>Most Common Allergies</h4>
+                    <div class="allergy-list" id="commonAllergies"></div>
+                </div>
+                <div class="allergy-stat">
+                    <h4>Allergy-Free Products</h4>
+                    <div class="safe-product-count" id="safeProductCount">0</div>
+                </div>
+            </div>
+            
+            <div class="allergy-reports-table">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Reported Allergies</th>
+                            <th>Safe Products Found</th>
+                            <th>Alerts Triggered</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="allergyReportsBody"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section class="admin-section" id="settingsSection">
+            <div class="settings-grid">
+                <div class="settings-card">
+                    <h3>Platform Settings</h3>
+                    <div class="setting-item">
+                        <label>Maintenance Mode</label>
+                        <input type="checkbox" id="maintenanceMode">
+                    </div>
+                    <div class="setting-item">
+                        <label>New User Registration</label>
+                        <input type="checkbox" id="registrationOpen" checked>
+                    </div>
+                    <div class="setting-item">
+                        <label>AI Analysis Limit (per day)</label>
+                        <input type="number" value="10" id="analysisLimit">
+                    </div>
+                </div>
+                
+                <div class="settings-card">
+                    <h3>Notification Settings</h3>
+                    <div class="setting-item">
+                        <label>Email Notifications</label>
+                        <input type="checkbox" id="emailNotifications" checked>
+                    </div>
+                    <div class="setting-item">
+                        <label>New User Alerts</label>
+                        <input type="checkbox" id="userAlerts" checked>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="admin.js"></script>
+</body>
+</html>
