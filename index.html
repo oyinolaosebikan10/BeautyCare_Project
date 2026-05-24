@@ -337,7 +337,7 @@
                         </div>
                         <h4>Drop your photo here</h4>
                         <p>or click to browse files</p>
-                        <span class="upload-hint">JPG, PNG up to 10MB • Secure & private</span>
+                        <span class="upload-hint">JPG, PNG up to 10MB · Secure &amp; private</span>
                     </div>
                     <div class="upload-preview" id="uploadPreview" hidden>
                         <img id="preview" alt="Your photo">
@@ -463,10 +463,11 @@
                         <div class="vs-badge">AI</div>
                     </div>
                     
+                    <!-- CHANGE: added style for smooth fade-in of AI-generated after image -->
                     <div class="comparison-item after">
                         <div class="comparison-label">Enhanced Guide</div>
                         <div class="image-container after-container" id="afterContainer">
-                            <img id="afterImage" alt="After">
+                            <img id="afterImage" alt="AI Enhanced Guide" style="opacity:0; transition: opacity 0.6s ease;">
                             <div class="makeup-overlay" id="makeupOverlay"></div>
                             <div class="feature-markers" id="featureMarkers"></div>
                         </div>
@@ -488,9 +489,7 @@
                         <div class="card-content">
                             <h4>Color Science</h4>
                             <div class="color-analysis" id="colorAnalysis">
-                                <div class="season-palette" id="seasonPalette">
-                                    <!-- Dynamic seasonal color analysis -->
-                                </div>
+                                <div class="season-palette" id="seasonPalette"></div>
                             </div>
                         </div>
                     </div>
@@ -535,15 +534,11 @@
                 <button class="cat-tab" data-category="skincare">Skincare</button>
             </div>
             
-            <div class="recommendations-grid" id="productResults">
-                <!-- Dynamic product recommendations -->
-            </div>
+            <div class="recommendations-grid" id="productResults"></div>
 
             <div class="application-masterclass" id="applicationMasterclass">
                 <h4><i class="fas fa-graduation-cap"></i> Personalized Application Masterclass</h4>
-                <div class="masterclass-timeline" id="masterclassTimeline">
-                    <!-- Step-by-step video guides -->
-                </div>
+                <div class="masterclass-timeline" id="masterclassTimeline"></div>
             </div>
         </div>
     </div>
@@ -573,14 +568,12 @@
         </div>
     </div>
 
-    <div class="ingredients-knowledge-grid" id="ingredientsGrid">
-        <!-- Ingredient knowledge cards -->
-    </div>
+    <div class="ingredients-knowledge-grid" id="ingredientsGrid"></div>
 
     <div class="safety-center" data-aos="fade-up">
         <div class="safety-header">
             <i class="fas fa-shield-alt"></i>
-            <h3>Safety & Allergy Center</h3>
+            <h3>Safety &amp; Allergy Center</h3>
         </div>
         <div class="safety-grid">
             <div class="safety-card">
@@ -618,9 +611,7 @@
         </p>
     </div>
 
-    <div class="resources-grid" id="resourcesGrid">
-        <!-- Digital resources cards -->
-    </div>
+    <div class="resources-grid" id="resourcesGrid"></div>
 </section>
 
 <!-- Community Section -->
@@ -749,7 +740,6 @@
 <!-- Toast Container -->
 <div class="toast-container" id="toastContainer"></div>
 
-<!-- Scripts -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 <script src="script.js"></script>
 </body>
